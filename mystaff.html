@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>スタッフ別シフト</title>
+
+    <link rel="stylesheet"
+        href="style.css">
+
+</head>
+
+
+<body>
+
+    <header>
+
+        <h1>👤 スタッフ別シフト</h1>
+
+        <p>
+            スタッフごとの担当を確認できます
+        </p>
+
+    </header>
+
+
+    <main>
+
+        <!-- スタッフ選択 -->
+
+        <section class="card">
+
+            <h2>👤 スタッフを選択</h2>
+
+            <select id="staffSelect">
+
+                <option value="">
+                    スタッフを選択してください
+                </option>
+
+            </select>
+
+        </section>
+
+
+        <!-- 日付タブ -->
+
+        <section class="card">
+
+            <h2>📅 開催日</h2>
+
+            <div class="day-tabs">
+
+                <button
+                    class="day-tab active"
+                    data-day="1">
+
+                    1日目
+
+                </button>
+
+
+                <button
+                    class="day-tab"
+                    data-day="2">
+
+                    2日目
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- シフト -->
+
+        <section class="card">
+
+            <h2 id="shiftTitle">
+                1日目のシフト
+            </h2>
+
+            <div id="myShiftList">
+
+                <p class="empty-message">
+                    スタッフを選択してください。
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- 戻る -->
+
+        <section class="card">
+
+            <button
+                id="backButton">
+
+                ← シフト表に戻る
+
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            文化祭シフト管理
+        </p>
+
+    </footer>
+
+
+    <script src="mystaff.js"></script>
+
+</body>
+
+</html>

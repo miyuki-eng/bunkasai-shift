@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>文化祭シフト管理</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <h1>文化祭シフト管理</h1>
+        <p>スタッフのシフトを確認・管理できます</p>
+    </header>
+
+
+    <main>
+
+        <!-- 開催日選択 -->
+        <section class="card">
+
+            <h2>📅 開催日</h2>
+
+            <div class="day-tabs">
+
+                <button
+                    class="day-tab active"
+                    data-day="1">
+                    1日目
+                </button>
+
+                <button
+                    class="day-tab"
+                    data-day="2">
+                    2日目
+                </button>
+
+            </div>
+
+        </section>
+
+        <section class="card">
+
+            <h2>👤 自分の名前</h2>
+
+            <select id="myNameSelect">
+
+                <option value="">
+                    名前を選択してください
+                </option>
+
+            </select>
+
+        </section>
+
+
+        <section
+            class="current-shift-card"
+            id="currentShiftCard">
+
+            <h2>📍 現在の担当</h2>
+
+            <div id="currentShift">
+                名前を選択してください。
+            </div>
+
+        </section>
+
+
+        <section
+            class="next-shift-card"
+            id="nextShiftCard">
+
+            <h2>⏭️ 次の担当</h2>
+
+            <div id="nextShift">
+                名前を選択してください。
+            </div>
+
+        </section>
+
+
+        <!-- シフト表 -->
+        <section class="card">
+
+            <h2 id="shiftTitle">1日目のシフト</h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>時間</th>
+                            <th>🛍️ 物販</th>
+                            <th>🎨 ワークショップ</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="shiftTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- スタッフ管理 -->
+        <section class="card">
+
+            <h2>👥 スタッフ管理</h2>
+
+            <button id="manageButton">
+                スタッフを管理する
+            </button>
+
+        </section>
+
+
+        <!-- シフト編集 -->
+        <section class="card">
+
+            <h2>✏️ シフト編集</h2>
+
+            <p>
+                スタッフのシフトを登録・変更できます。
+            </p>
+
+            <button id="editButton">
+                シフトを編集する
+            </button>
+
+        </section>
+
+        <section class="card">
+
+            <h2>🕐 時間帯管理</h2>
+
+            <p>
+                シフトで使用する時間帯を設定できます。
+            </p>
+
+            <button id="timeButton">
+                時間帯を管理する
+            </button>
+
+        </section>
+
+        <section class="card">
+
+            <h2>👤 スタッフ別シフト</h2>
+
+            <p>
+                スタッフごとの担当時間を確認できます。
+            </p>
+
+            <button id="myStaffButton">
+                スタッフ別シフトを見る
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        <p>文化祭シフト管理</p>
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

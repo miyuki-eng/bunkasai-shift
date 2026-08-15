@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>シフト編集</title>
+
+    <link rel="stylesheet"
+        href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>✏️ シフト編集</h1>
+
+    <p>
+        スタッフのシフトを登録・変更できます
+    </p>
+
+</header>
+
+
+<main>
+
+    <!-- =========================
+         日付
+    ========================== -->
+
+    <section class="card">
+
+        <h2>📅 開催日</h2>
+
+        <div class="day-tabs">
+
+            <button
+                class="day-tab active"
+                data-day="1">
+
+                1日目
+
+            </button>
+
+
+            <button
+                class="day-tab"
+                data-day="2">
+
+                2日目
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         シフト登録
+    ========================== -->
+
+    <section class="card">
+
+        <h2>➕ シフトを登録</h2>
+
+
+        <!-- 時間 -->
+
+        <label>
+            🕐 時間帯
+        </label>
+
+        <select id="timeSelect">
+
+            <option value="">
+                時間帯を選択してください
+            </option>
+
+        </select>
+
+
+        <!-- スタッフ -->
+
+        <label>
+            👤 スタッフ
+        </label>
+
+        <select id="staffSelect">
+
+            <option value="">
+                スタッフを選択してください
+            </option>
+
+        </select>
+
+
+        <!-- 担当 -->
+
+        <label>
+            📋 担当
+        </label>
+
+        <div class="job-select">
+
+            <label>
+
+                <input
+                    type="radio"
+                    name="job"
+                    value="sales">
+
+                🛍️ 物販
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="radio"
+                    name="job"
+                    value="workshop">
+
+                🎨 ワークショップ
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="radio"
+                    name="job"
+                    value="break">
+
+                ☕ 休憩
+
+            </label>
+
+        </div>
+
+
+        <button
+            id="registerButton">
+
+            シフトを登録
+
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         登録済みシフト
+    ========================== -->
+
+    <section class="card">
+
+        <h2 id="shiftTitle">
+            1日目のシフト
+        </h2>
+
+
+        <div id="shiftList">
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         戻る
+    ========================== -->
+
+    <section class="card">
+
+        <button
+            id="backButton">
+
+            ← シフト管理に戻る
+
+        </button>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        文化祭シフト管理
+    </p>
+
+</footer>
+
+
+<script src="shift.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>時間帯管理</title>
+
+    <link rel="stylesheet"
+        href="style.css">
+
+</head>
+
+
+<body>
+
+    <!-- ヘッダー -->
+
+    <header>
+
+        <h1>時間帯管理</h1>
+
+        <p>
+            シフトの時間帯を登録・管理できます
+        </p>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- 開催日 -->
+
+        <section class="card">
+
+            <h2>📅 開催日</h2>
+
+            <div class="day-tabs">
+
+                <button
+                    class="day-tab active"
+                    data-day="1">
+
+                    1日目
+
+                </button>
+
+
+                <button
+                    class="day-tab"
+                    data-day="2">
+
+                    2日目
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- 時間帯追加 -->
+
+        <section class="card">
+
+            <h2>🕐 時間帯を追加</h2>
+
+
+            <label>
+                開始時間
+            </label>
+
+            <input
+                type="time"
+                id="startTime"
+            >
+
+
+            <label>
+                終了時間
+            </label>
+
+            <input
+                type="time"
+                id="endTime"
+            >
+
+
+            <button
+                id="addTimeButton">
+
+                ＋ 時間帯を追加
+
+            </button>
+
+        </section>
+
+
+
+        <!-- 登録済み時間帯 -->
+
+        <section class="card">
+
+            <h2>
+                📋 登録済み時間帯
+            </h2>
+
+
+            <div id="timeList">
+
+                <!-- JavaScriptで表示 -->
+
+            </div>
+
+        </section>
+
+
+
+        <!-- 戻る -->
+
+        <section class="card">
+
+            <button
+                id="backButton">
+
+                ← シフト表に戻る
+
+            </button>
+
+        </section>
+
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            文化祭シフト管理
+        </p>
+
+    </footer>
+
+
+    <script src="time.js"></script>
+
+</body>
+
+</html>

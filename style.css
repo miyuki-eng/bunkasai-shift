@@ -1,0 +1,1011 @@
+/* =========================
+   基本設定
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    background-color: #fff8f5;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        sans-serif;
+
+    color: #444;
+}
+
+
+/* =========================
+   ヘッダー
+========================= */
+
+header {
+    background-color: #ffffff;
+
+    text-align: center;
+
+    padding: 25px 15px;
+
+    border-bottom: 1px solid #f0e2dc;
+}
+
+header h1 {
+    margin: 0;
+
+    color: #e88b9c;
+
+    font-size: 28px;
+}
+
+header p {
+    margin: 8px 0 0;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   メイン
+========================= */
+
+main {
+    width: 95%;
+    max-width: 900px;
+
+    margin: 25px auto;
+}
+
+
+/* =========================
+   カード
+========================= */
+
+.card {
+    background-color: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.card h2 {
+    margin-top: 0;
+
+    font-size: 20px;
+
+    color: #555;
+}
+
+
+/* =========================
+   セレクトボックス
+========================= */
+
+select {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #eadbd5;
+
+    border-radius: 10px;
+
+    background-color: #fffafa;
+
+    font-size: 16px;
+
+    color: #555;
+}
+
+
+/* =========================
+   シフト表
+========================= */
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    min-width: 600px;
+
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #eadbd5;
+
+    padding: 12px;
+
+    text-align: center;
+}
+
+th {
+    background-color: #fff0f0;
+
+    color: #666;
+
+    font-weight: bold;
+}
+
+td {
+    background-color: #ffffff;
+}
+
+
+/* 時間の列 */
+
+td:first-child,
+th:first-child {
+    white-space: nowrap;
+
+    background-color: #fff8f5;
+}
+
+
+/* =========================
+   ボタン
+========================= */
+
+button {
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background-color: #e99aaa;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+
+/* =========================
+   説明文
+========================= */
+
+.card p {
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   フッター
+========================= */
+
+footer {
+    text-align: center;
+
+    padding: 25px;
+
+    color: #999;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 20px 10px;
+    }
+
+    header h1 {
+        font-size: 23px;
+    }
+
+    main {
+        width: 92%;
+    }
+
+    .card {
+        padding: 16px;
+
+        border-radius: 14px;
+    }
+
+    .card h2 {
+        font-size: 18px;
+    }
+
+    th,
+    td {
+        padding: 10px 8px;
+
+        font-size: 14px;
+    }
+
+}
+
+/* =========================
+   スタッフ管理
+========================= */
+
+#staffForm {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+#staffForm label {
+    font-weight: bold;
+
+    margin-top: 5px;
+}
+
+
+#staffForm input[type="text"] {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #eadbd5;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+
+    background-color: #fffafa;
+}
+
+
+.job-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 10px;
+
+    margin: 5px 0 10px;
+}
+
+
+.job-list label {
+    background-color: #fff8f5;
+
+    border: 1px solid #f0e2dc;
+
+    border-radius: 10px;
+
+    padding: 12px;
+
+    font-weight: normal;
+
+    cursor: pointer;
+}
+
+
+.job-list input {
+    margin-right: 8px;
+}
+
+
+/* =========================
+   スタッフ一覧
+========================= */
+
+.staff-item {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 15px;
+
+    margin-bottom: 12px;
+
+    background-color: #fffafa;
+
+    border: 1px solid #f0e2dc;
+
+    border-radius: 12px;
+}
+
+
+.staff-info h3 {
+    margin: 0 0 5px;
+
+    color: #555;
+
+    font-size: 17px;
+}
+
+
+.staff-info p {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+.staff-buttons {
+    display: flex;
+
+    gap: 8px;
+
+    flex-shrink: 0;
+}
+
+
+.staff-buttons button {
+    width: auto;
+
+    padding: 8px 14px;
+
+    font-size: 14px;
+}
+
+
+.edit-button {
+    background-color: #e7a6b2;
+}
+
+
+.delete-button {
+    background-color: #aaa;
+}
+
+
+.empty-message {
+    text-align: center;
+
+    color: #999;
+
+    padding: 20px;
+}
+
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 600px) {
+
+    .staff-item {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .staff-buttons {
+        width: 100%;
+    }
+
+
+    .staff-buttons button {
+        flex: 1;
+    }
+
+
+    .job-list {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+/* =========================
+   シフト編集
+========================= */
+
+#saveButton {
+    margin-top: 20px;
+}
+
+
+#timeSelect,
+#salesSelect,
+#workshopSelect,
+#restSelect {
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-top: 6px;
+
+    margin-bottom: 15px;
+
+    border: 1px solid #eadbd5;
+
+    border-radius: 10px;
+
+    background-color: #fffafa;
+
+    font-size: 16px;
+
+    color: #555;
+}
+
+
+.card > label {
+    display: block;
+
+    font-weight: bold;
+
+    color: #666;
+
+    margin-top: 5px;
+}
+
+
+/* =========================
+   シフト一覧
+========================= */
+
+#shiftList .staff-item {
+    align-items: center;
+}
+
+
+#shiftList .staff-info p {
+    margin: 5px 0;
+
+    line-height: 1.5;
+}
+
+/* =========================
+   開催日タブ
+========================= */
+
+.day-tabs {
+    display: flex;
+
+    gap: 10px;
+
+    width: 100%;
+}
+
+
+.day-tab {
+    flex: 1;
+
+    background-color: #fff0f0;
+
+    color: #e88b9c;
+
+    border: 2px solid #f0d6d6;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    transition: 0.2s;
+}
+
+
+/* 選択中 */
+
+.day-tab.active {
+    background-color: #e99aaa;
+
+    color: white;
+
+    border-color: #e99aaa;
+}
+
+
+/* 押したとき */
+
+.day-tab:active {
+    transform: scale(0.98);
+}
+
+/* =========================
+   時間帯管理
+========================= */
+
+#startTime,
+#endTime {
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-top: 6px;
+
+    margin-bottom: 15px;
+
+    border: 1px solid #eadbd5;
+
+    border-radius: 10px;
+
+    background-color: #fffafa;
+
+    font-size: 16px;
+
+    color: #555;
+
+}
+
+
+.card > label {
+
+    display: block;
+
+    font-weight: bold;
+
+    color: #666;
+
+    margin-top: 5px;
+
+}
+
+
+/* 時間帯一覧 */
+
+#timeList .staff-item {
+
+    align-items: center;
+
+}
+
+
+#timeList .staff-info h3 {
+
+    margin: 0;
+
+    font-size: 17px;
+
+    color: #555;
+
+}
+
+/* =========================
+   スタッフ複数選択
+========================= */
+
+.staff-select-list {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 10px;
+
+    margin-top: 8px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.staff-checkbox {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 12px;
+
+    background-color: #fff8f5;
+
+    border: 1px solid #f0e2dc;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: normal;
+
+}
+
+
+.staff-checkbox input {
+
+    width: 18px;
+
+    height: 18px;
+
+    accent-color: #e99aaa;
+
+}
+
+
+.staff-checkbox span {
+
+    font-size: 15px;
+
+    color: #555;
+
+}
+
+
+@media (max-width: 600px) {
+
+    .staff-select-list {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+/* =========================
+   シフト表 スタッフ表示
+========================= */
+
+#shiftTable td {
+    vertical-align: middle;
+}
+
+
+/* スタッフ名 */
+
+#shiftTable td:not(:first-child) {
+    line-height: 1.8;
+    font-weight: bold;
+}
+
+
+/* 時間 */
+
+#shiftTable td:first-child {
+    white-space: nowrap;
+}
+
+/* =========================
+   スタッフ別シフト
+========================= */
+
+#staffSelect {
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #eadbd5;
+
+    border-radius: 10px;
+
+    background-color: #fffafa;
+
+    font-size: 16px;
+
+    color: #555;
+
+}
+
+
+/* シフトカード */
+
+.my-shift-item {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 15px;
+
+    margin-bottom: 10px;
+
+    background-color: #fff8f5;
+
+    border: 1px solid #f0e2dc;
+
+    border-radius: 12px;
+
+}
+
+
+.my-shift-time {
+
+    font-weight: bold;
+
+    color: #555;
+
+}
+
+
+.my-shift-job {
+
+    font-weight: bold;
+
+    color: #e28c9c;
+
+}
+
+
+@media (max-width: 600px) {
+
+    .my-shift-item {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 5px;
+
+    }
+
+}
+
+/* =========================
+   現在・次の担当
+========================= */
+
+.current-shift-card,
+.next-shift-card {
+
+    background-color: #fff8f5;
+
+    border-radius: 15px;
+
+    padding: 20px;
+
+    margin-bottom: 15px;
+
+    border: 1px solid #f0e2dc;
+
+}
+
+
+.current-shift-card h2,
+.next-shift-card h2 {
+
+    margin-top: 0;
+
+}
+
+
+.current-time {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+
+}
+
+
+.current-job {
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: #e28c9c;
+
+}
+
+/* =========================
+   シフト編集
+========================= */
+
+.card label {
+
+    display: block;
+
+    margin-top: 15px;
+
+    margin-bottom: 6px;
+
+    font-weight: bold;
+
+}
+
+
+.card select {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px;
+
+    border: 1px solid #eadbd5;
+
+    border-radius: 10px;
+
+    background-color: #fffafa;
+
+    font-size: 16px;
+
+}
+
+
+.job-select {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin: 10px 0 20px;
+
+}
+
+
+.job-select label {
+
+    margin: 0;
+
+    padding: 12px;
+
+    border: 1px solid #eadbd5;
+
+    border-radius: 10px;
+
+    background-color: #fff8f5;
+
+}
+
+
+.job-select input {
+
+    margin-right: 8px;
+
+}
+
+
+/* 登録済みシフト */
+
+.shift-edit-item {
+
+    padding: 15px;
+
+    margin-bottom: 12px;
+
+    background-color: #fff8f5;
+
+    border: 1px solid #f0e2dc;
+
+    border-radius: 12px;
+
+}
+
+
+.shift-edit-time {
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+
+}
+
+
+.shift-edit-job > div {
+
+    padding: 8px 0;
+
+    border-top: 1px solid #f0e2dc;
+
+}
+
+
+.delete-shift-button {
+
+    margin-top: 10px;
+
+    width: 100%;
+
+    padding: 10px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background-color: #eee;
+
+    cursor: pointer;
+
+}
+
+/* =========================
+   スタッフ別シフト
+========================= */
+
+.shift-person-group {
+
+    margin-top: 10px;
+
+    padding: 10px;
+
+    border-top: 1px solid #f0e2dc;
+
+}
+
+
+.shift-job-title {
+
+    font-weight: bold;
+
+    margin-bottom: 6px;
+
+}
+
+
+.shift-person {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 7px 0;
+
+}
+
+
+.shift-person button {
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+}
+
+
+.edit-person-button {
+
+    margin-right: 5px;
+
+}

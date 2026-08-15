@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>スタッフ管理</title>
+
+    <link rel="stylesheet"
+        href="style.css">
+
+</head>
+
+
+<body>
+
+    <!-- ヘッダー -->
+
+    <header>
+
+        <h1>スタッフ管理</h1>
+
+        <p>
+            文化祭スタッフを登録・管理できます
+        </p>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- スタッフ追加 -->
+
+        <section class="card">
+
+            <h2>👥 スタッフを追加</h2>
+
+            <form id="staffForm">
+
+                <label>
+                    スタッフ名
+                </label>
+
+                <input
+                    type="text"
+                    id="staffName"
+                    placeholder="例：山田太郎"
+                    required
+                >
+
+
+                <label>
+                    担当できる仕事
+                </label>
+
+                <div class="job-list">
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            name="job"
+                            value="物販"
+                        >
+                        🛍️ 物販
+                    </label>
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            name="job"
+                            value="ワークショップ"
+                        >
+                        🎨 ワークショップ
+                    </label>
+
+                </div>
+
+
+                <button type="submit">
+                    スタッフを登録
+                </button>
+
+            </form>
+
+        </section>
+
+
+
+        <!-- スタッフ一覧 -->
+
+        <section class="card">
+
+            <h2>📋 スタッフ一覧</h2>
+
+            <div id="staffList">
+
+                <!-- JavaScriptで表示 -->
+
+            </div>
+
+        </section>
+
+
+
+        <!-- 戻る -->
+
+        <section class="card">
+
+            <button
+                id="backButton"
+            >
+                ← シフト表に戻る
+            </button>
+
+        </section>
+
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            文化祭シフト管理
+        </p>
+
+    </footer>
+
+
+    <script src="staff.js"></script>
+
+</body>
+
+</html>
