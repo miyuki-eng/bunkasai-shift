@@ -1,9 +1,84 @@
 // =========================
+// Firebase
+// =========================
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getDatabase,
+    ref,
+    onValue
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
+
+// =========================
+// Firebase設定
+// =========================
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyD_gYOoHpgbxHH4u7pEJIDK0yX7IRBlD-A",
+
+    authDomain:
+        "bunkasai-shift-ba044.firebaseapp.com",
+
+    databaseURL:
+        "https://bunkasai-shift-ba044-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+    projectId:
+        "bunkasai-shift-ba044",
+
+    storageBucket:
+        "bunkasai-shift-ba044.firebasestorage.app",
+
+    messagingSenderId:
+        "415230184888",
+
+    appId:
+        "1:415230184888:web:ccb285a6843c558cf3134d"
+
+};
+
+
+// =========================
+// Firebase初期化
+// =========================
+
+const app =
+    initializeApp(firebaseConfig);
+
+const database =
+    getDatabase(app);
+
+
+// =========================
+// Firebase参照
+// =========================
+
+const staffRef =
+    ref(database, "staff");
+
+const shiftDataRef =
+    ref(database, "shiftData");
+
+
+// =========================
 // データ
 // =========================
 
-let staff = [];
+let staffData = [];
+
 let shiftData = [];
+
+
+// =========================
+// 現在の日
+// =========================
+
+let selectedDay = "1";
 
 
 // =========================
@@ -11,95 +86,171 @@ let shiftData = [];
 // =========================
 
 const staffSelect =
-    document.getElementById("staffSelect");
+    document.getElementById(
+        "staffSelect"
+    );
 
 const myShiftList =
-    document.getElementById("myShiftList");
+    document.getElementById(
+        "myShiftList"
+    );
 
 const shiftTitle =
-    document.getElementById("shiftTitle");
+    document.getElementById(
+        "shiftTitle"
+    );
 
 const backButton =
-    document.getElementById("backButton");
+    document.getElementById(
+        "backButton"
+    );
 
 const dayTabs =
-    document.querySelectorAll(".day-tab");
+    document.querySelectorAll(
+        ".day-tab"
+    );
 
 
 // =========================
-// 選択中の日
+// スタッフをFirebaseから読み込む
 // =========================
 
-let selectedDay = "1";
+onValue(
+    staffRef,
+    snapshot => {
+
+        const data =
+            snapshot.val();
+
+        staffData = [];
+
+        if (data) {
+
+            Object.entries(data).forEach(
+                ([id, person]) => {
+
+                    staffData.push({
+
+                        id: id,
+
+                        name:
+                            person.name
+
+                    });
+
+                }
+            );
+
+        }
+
+        console.log(
+            "スタッフを読み込みました",
+            staffData
+        );
+
+        loadStaff();
+
+    }
+);
 
 
 // =========================
-// 最新データを読み込む
+// シフトをFirebaseから読み込む
 // =========================
 
-function loadData() {
+onValue(
+    shiftDataRef,
+    snapshot => {
 
-    staff =
-        JSON.parse(
-            localStorage.getItem("staff")
-        ) || [];
+        const data =
+            snapshot.val();
 
-    shiftData =
-        JSON.parse(
-            localStorage.getItem("shiftData")
-        ) || [];
+        shiftData = [];
 
-}
+        if (data) {
+
+            Object.entries(data).forEach(
+                ([id, shift]) => {
+
+                    shiftData.push({
+
+                        id: id,
+
+                        day:
+                            String(
+                                shift.day
+                            ),
+
+                        time:
+                            shift.time,
+
+                        sales:
+                            Array.isArray(
+                                shift.sales
+                            )
+                                ? shift.sales
+                                : [],
+
+                        workshop:
+                            Array.isArray(
+                                shift.workshop
+                            )
+                                ? shift.workshop
+                                : [],
+
+                        break:
+                            Array.isArray(
+                                shift.break
+                            )
+                                ? shift.break
+                                : []
+
+                    });
+
+                }
+            );
+
+        }
+
+        console.log(
+            "シフトを読み込みました",
+            shiftData
+        );
+
+        displayMyShift();
+
+    }
+);
 
 
 // =========================
-// スタッフ一覧を読み込む
+// スタッフ一覧を表示
 // =========================
 
 function loadStaff() {
 
-    loadData();
+    staffSelect.innerHTML = `
+
+        <option value="">
+            スタッフを選択してください
+        </option>
+
+    `;
 
 
-    staffSelect.innerHTML = "";
-
-    const defaultOption =
-        document.createElement("option");
-
-    defaultOption.value = "";
-
-    defaultOption.textContent =
-        "スタッフを選択してください";
-
-    staffSelect.appendChild(
-        defaultOption
-    );
-
-
-    staff.forEach(
+    staffData.forEach(
         person => {
-
-            if (
-                !person ||
-                !person.name
-            ) {
-                return;
-            }
-
 
             const option =
                 document.createElement(
                     "option"
                 );
 
-
             option.value =
                 person.name;
 
-
             option.textContent =
                 person.name;
-
 
             staffSelect.appendChild(
                 option
@@ -112,32 +263,17 @@ function loadStaff() {
 
 
 // =========================
-// 配列にする
+// スタッフ選択
 // =========================
 
-function toArray(value) {
+staffSelect.addEventListener(
+    "change",
+    function() {
 
-    if (Array.isArray(value)) {
-
-        return value;
-
-    }
-
-
-    if (
-        value === undefined ||
-        value === null ||
-        value === ""
-    ) {
-
-        return [];
+        displayMyShift();
 
     }
-
-
-    return [value];
-
-}
+);
 
 
 // =========================
@@ -146,15 +282,7 @@ function toArray(value) {
 
 function displayMyShift() {
 
-    // 最新データを読み込む
-
-    loadData();
-
-
-    myShiftList.innerHTML = "";
-
-
-    const selectedStaff =
+    const staffName =
         staffSelect.value;
 
 
@@ -162,16 +290,16 @@ function displayMyShift() {
         `${selectedDay}日目のシフト`;
 
 
-    // =========================
-    // スタッフ未選択
-    // =========================
+    // 名前が選択されていない
 
-    if (!selectedStaff) {
+    if (!staffName) {
 
         myShiftList.innerHTML = `
+
             <p class="empty-message">
                 スタッフを選択してください。
             </p>
+
         `;
 
         return;
@@ -180,7 +308,7 @@ function displayMyShift() {
 
 
     // =========================
-    // 自分のシフトだけ取得
+    // 選択した日のシフト
     // =========================
 
     const myShifts =
@@ -193,56 +321,38 @@ function displayMyShift() {
             .filter(
                 shift => {
 
-                    const sales =
-                        toArray(
-                            shift.sales
-                        );
-
-
-                    const workshop =
-                        toArray(
-                            shift.workshop
-                        );
-
-
-                    const breaks =
-                        toArray(
-                            shift.break
-                        );
-
-
                     return (
-                        sales.includes(
-                            selectedStaff
-                        ) ||
 
-                        workshop.includes(
-                            selectedStaff
-                        ) ||
-
-                        breaks.includes(
-                            selectedStaff
+                        shift.sales.includes(
+                            staffName
                         )
+
+                        ||
+
+                        shift.workshop.includes(
+                            staffName
+                        )
+
+                        ||
+
+                        shift.break.includes(
+                            staffName
+                        )
+
                     );
 
                 }
+            )
+            .sort(
+                (a, b) =>
+                    a.time.localeCompare(
+                        b.time
+                    )
             );
 
 
     // =========================
-    // 時間順
-    // =========================
-
-    myShifts.sort(
-        (a, b) =>
-            a.time.localeCompare(
-                b.time
-            )
-    );
-
-
-    // =========================
-    // シフトなし
+    // シフトがない
     // =========================
 
     if (
@@ -250,9 +360,15 @@ function displayMyShift() {
     ) {
 
         myShiftList.innerHTML = `
+
             <p class="empty-message">
-                この日のシフトはありません。
+
+                ${staffName}さんの
+                ${selectedDay}日目のシフトは
+                ありません。
+
             </p>
+
         `;
 
         return;
@@ -261,8 +377,11 @@ function displayMyShift() {
 
 
     // =========================
-    // シフト表示
+    // 表示
     // =========================
+
+    myShiftList.innerHTML = "";
+
 
     myShifts.forEach(
         shift => {
@@ -274,89 +393,63 @@ function displayMyShift() {
 
 
             item.className =
-                "my-shift-item";
-
-
-            const sales =
-                toArray(
-                    shift.sales
-                );
-
-
-            const workshop =
-                toArray(
-                    shift.workshop
-                );
-
-
-            const breaks =
-                toArray(
-                    shift.break
-                );
-
-
-            let jobs = [];
+                "shift-edit-item";
 
 
             // =========================
-            // 物販
+            // 担当を判定
             // =========================
+
+            let job = "";
+
 
             if (
-                sales.includes(
-                    selectedStaff
+                shift.sales.includes(
+                    staffName
                 )
             ) {
 
-                jobs.push(
-                    "🛍️ 物販"
-                );
+                job =
+                    "🛍️ 物販";
 
             }
 
-
-            // =========================
-            // ワークショップ
-            // =========================
-
-            if (
-                workshop.includes(
-                    selectedStaff
+            else if (
+                shift.workshop.includes(
+                    staffName
                 )
             ) {
 
-                jobs.push(
-                    "🎨 ワークショップ"
-                );
+                job =
+                    "🎨 ワークショップ";
 
             }
 
-
-            // =========================
-            // 休憩
-            // =========================
-
-            if (
-                breaks.includes(
-                    selectedStaff
+            else if (
+                shift.break.includes(
+                    staffName
                 )
             ) {
 
-                jobs.push(
-                    "☕ 休憩"
-                );
+                job =
+                    "☕ 休憩";
 
             }
 
 
             item.innerHTML = `
 
-                <div class="my-shift-time">
+                <div class="shift-edit-time">
+
                     🕐 ${shift.time}
+
                 </div>
 
-                <div class="my-shift-job">
-                    ${jobs.join(" / ")}
+
+                <div class="shift-job-title">
+
+                    ${job}
+
                 </div>
 
             `;
@@ -373,21 +466,7 @@ function displayMyShift() {
 
 
 // =========================
-// スタッフ変更
-// =========================
-
-staffSelect.addEventListener(
-    "change",
-    function () {
-
-        displayMyShift();
-
-    }
-);
-
-
-// =========================
-// 日付切り替え
+// 日付タブ
 // =========================
 
 dayTabs.forEach(
@@ -395,7 +474,9 @@ dayTabs.forEach(
 
         tab.addEventListener(
             "click",
-            function () {
+            function() {
+
+                // 全タブOFF
 
                 dayTabs.forEach(
                     otherTab => {
@@ -408,14 +489,20 @@ dayTabs.forEach(
                 );
 
 
+                // 選択したタブON
+
                 this.classList.add(
                     "active"
                 );
 
 
+                // 日付変更
+
                 selectedDay =
                     this.dataset.day;
 
+
+                // 表示更新
 
                 displayMyShift();
 
@@ -432,7 +519,7 @@ dayTabs.forEach(
 
 backButton.addEventListener(
     "click",
-    function () {
+    function() {
 
         location.href =
             "index.html";
@@ -442,56 +529,7 @@ backButton.addEventListener(
 
 
 // =========================
-// ページ表示時に最新データ
-// =========================
-
-window.addEventListener(
-    "pageshow",
-    function () {
-
-        const currentName =
-            staffSelect.value;
-
-
-        loadStaff();
-
-
-        // 以前選んでいたスタッフを復元
-
-        if (
-            currentName
-        ) {
-
-            const exists =
-                Array.from(
-                    staffSelect.options
-                ).some(
-                    option =>
-                        option.value ===
-                        currentName
-                );
-
-
-            if (exists) {
-
-                staffSelect.value =
-                    currentName;
-
-            }
-
-        }
-
-
-        displayMyShift();
-
-    }
-);
-
-
-// =========================
 // 初期表示
 // =========================
-
-loadStaff();
 
 displayMyShift();

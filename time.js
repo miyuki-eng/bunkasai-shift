@@ -1,11 +1,48 @@
 // =========================
-// 時間帯データ
+// Firebase
 // =========================
 
-let timeSlots =
-    JSON.parse(
-        localStorage.getItem("timeSlots")
-    ) || [];
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getDatabase,
+    ref,
+    push,
+    set,
+    remove,
+    onValue
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
+
+// =========================
+// Firebase設定
+// =========================
+
+const firebaseConfig = {
+    apiKey: "AIzaSyD_gYOoHpgbxHH4u7pEJIDK0yX7IRBlD-A",
+    authDomain: "bunkasai-shift-ba044.firebaseapp.com",
+    databaseURL: "https://bunkasai-shift-ba044-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "bunkasai-shift-ba044",
+    storageBucket: "bunkasai-shift-ba044.firebasestorage.app",
+    messagingSenderId: "415230184888",
+    appId: "1:415230184888:web:ccb285a6843c558cf3134d"
+};
+
+
+// =========================
+// Firebase初期化
+// =========================
+
+const app =
+    initializeApp(firebaseConfig);
+
+const database =
+    getDatabase(app);
+
+const timeSlotsRef =
+    ref(database, "timeSlots");
 
 
 // =========================
@@ -47,6 +84,13 @@ let selectedDay = "1";
 
 
 // =========================
+// 時間帯データ
+// =========================
+
+let timeSlots = [];
+
+
+// =========================
 // 時間表示
 // =========================
 
@@ -55,6 +99,58 @@ function formatTime(time) {
     return time;
 
 }
+
+
+// =========================
+// Firebaseから時間帯を読み込む
+// =========================
+
+onValue(
+    timeSlotsRef,
+    snapshot => {
+
+        const data =
+            snapshot.val();
+
+        timeSlots = [];
+
+        if (data) {
+
+            Object.entries(data).forEach(
+                ([id, slot]) => {
+
+                    timeSlots.push({
+
+                        id: id,
+
+                        day: String(
+                            slot.day
+                        ),
+
+                        start:
+                            slot.start,
+
+                        end:
+                            slot.end
+
+                    });
+
+                }
+            );
+
+        }
+
+
+        console.log(
+            "Firebaseから時間帯を読み込みました",
+            timeSlots
+        );
+
+
+        displayTimeSlots();
+
+    }
+);
 
 
 // =========================
@@ -70,21 +166,20 @@ function displayTimeSlots() {
 
     const daySlots =
         timeSlots
-            .map((slot, index) => ({
-                ...slot,
-                originalIndex: index
-            }))
             .filter(
                 slot =>
-                    slot.day === selectedDay
+                    String(slot.day) ===
+                    String(selectedDay)
             );
 
 
-    // 時間順に並べる
+    // 時間順
 
     daySlots.sort(
         (a, b) =>
-            a.start.localeCompare(b.start)
+            a.start.localeCompare(
+                b.start
+            )
     );
 
 
@@ -99,6 +194,7 @@ function displayTimeSlots() {
         `;
 
         return;
+
     }
 
 
@@ -107,7 +203,9 @@ function displayTimeSlots() {
     daySlots.forEach(slot => {
 
         const item =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         item.className =
             "staff-item";
@@ -131,11 +229,7 @@ function displayTimeSlots() {
 
                 <button
                     class="delete-button"
-                    onclick="
-                        deleteTimeSlot(
-                            ${slot.originalIndex}
-                        )
-                    "
+                    data-id="${slot.id}"
                 >
 
                     削除
@@ -145,6 +239,24 @@ function displayTimeSlots() {
             </div>
 
         `;
+
+
+        const deleteButton =
+            item.querySelector(
+                ".delete-button"
+            );
+
+
+        deleteButton.addEventListener(
+            "click",
+            function () {
+
+                deleteTimeSlot(
+                    slot.id
+                );
+
+            }
+        );
 
 
         timeList.appendChild(item);
@@ -160,7 +272,7 @@ function displayTimeSlots() {
 
 addTimeButton.addEventListener(
     "click",
-    function () {
+    async function () {
 
         const start =
             startTime.value;
@@ -181,10 +293,11 @@ addTimeButton.addEventListener(
             );
 
             return;
+
         }
 
 
-        // 終了時間が開始時間より前
+        // 時間チェック
 
         if (start >= end) {
 
@@ -193,6 +306,7 @@ addTimeButton.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -201,7 +315,8 @@ addTimeButton.addEventListener(
         const alreadyExists =
             timeSlots.some(
                 slot =>
-                    slot.day === selectedDay &&
+                    String(slot.day) ===
+                        String(selectedDay) &&
                     slot.start === start &&
                     slot.end === end
             );
@@ -214,47 +329,61 @@ addTimeButton.addEventListener(
             );
 
             return;
+
         }
 
 
-        // 時間帯追加
+        try {
 
-        timeSlots.push({
+            // Firebaseに新しいIDを作る
 
-            day: selectedDay,
-
-            start: start,
-
-            end: end
-
-        });
+            const newTimeRef =
+                push(timeSlotsRef);
 
 
-        // 保存
+            // Firebaseへ保存
 
-        localStorage.setItem(
-            "timeSlots",
-            JSON.stringify(
-                timeSlots
-            )
-        );
+            await set(
+                newTimeRef,
+                {
 
+                    day:
+                        String(selectedDay),
 
-        // 入力欄をクリア
+                    start:
+                        start,
 
-        startTime.value = "";
+                    end:
+                        end
 
-        endTime.value = "";
-
-
-        // 表示更新
-
-        displayTimeSlots();
+                }
+            );
 
 
-        alert(
-            "時間帯を追加しました！"
-        );
+            // 入力欄をクリア
+
+            startTime.value = "";
+            endTime.value = "";
+
+
+            alert(
+                "時間帯を追加しました！"
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "時間帯の登録に失敗しました",
+                error
+            );
+
+
+            alert(
+                "時間帯の登録に失敗しました。"
+            );
+
+        }
 
     }
 );
@@ -264,10 +393,13 @@ addTimeButton.addEventListener(
 // 時間帯削除
 // =========================
 
-function deleteTimeSlot(index) {
+async function deleteTimeSlot(id) {
 
     const slot =
-        timeSlots[index];
+        timeSlots.find(
+            item =>
+                item.id === id
+        );
 
 
     if (!slot) {
@@ -290,21 +422,38 @@ function deleteTimeSlot(index) {
     }
 
 
-    timeSlots.splice(
-        index,
-        1
-    );
+    try {
+
+        const deleteRef =
+            ref(
+                database,
+                `timeSlots/${id}`
+            );
 
 
-    localStorage.setItem(
-        "timeSlots",
-        JSON.stringify(
-            timeSlots
-        )
-    );
+        await remove(
+            deleteRef
+        );
 
 
-    displayTimeSlots();
+        alert(
+            "時間帯を削除しました。"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "時間帯の削除に失敗しました",
+            error
+        );
+
+
+        alert(
+            "時間帯の削除に失敗しました。"
+        );
+
+    }
 
 }
 
@@ -368,10 +517,3 @@ backButton.addEventListener(
 
     }
 );
-
-
-// =========================
-// 初期表示
-// =========================
-
-displayTimeSlots();

@@ -1,11 +1,72 @@
 // =========================
-// スタッフデータ
+// Firebase
 // =========================
 
-let staff =
-    JSON.parse(
-        localStorage.getItem("staff")
-    ) || [];
+import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+import {
+    getDatabase,
+    ref,
+    onValue,
+    push,
+    set,
+    remove
+}
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+import {
+    getAuth,
+    signInAnonymously
+}
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+
+// =========================
+// Firebase設定
+// =========================
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyD_gYOoHpgbxHH4u7pEJIDK0yX7IRBlD-A",
+
+    authDomain:
+        "bunkasai-shift-ba044.firebaseapp.com",
+
+    databaseURL:
+        "https://bunkasai-shift-ba044-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+    projectId:
+        "bunkasai-shift-ba044",
+
+    storageBucket:
+        "bunkasai-shift-ba044.firebasestorage.app",
+
+    messagingSenderId:
+        "415230184888",
+
+    appId:
+        "1:415230184888:web:ccb285a6843c558cf3134d"
+
+};
+
+
+// =========================
+// Firebase初期化
+// =========================
+
+const app =
+    initializeApp(
+        firebaseConfig
+    );
+
+
+const database =
+    getDatabase(app);
+
+
+const auth =
+    getAuth(app);
 
 
 // =========================
@@ -13,16 +74,116 @@ let staff =
 // =========================
 
 const staffForm =
-    document.getElementById("staffForm");
+    document.getElementById(
+        "staffForm"
+    );
 
 const staffName =
-    document.getElementById("staffName");
+    document.getElementById(
+        "staffName"
+    );
 
 const staffList =
-    document.getElementById("staffList");
+    document.getElementById(
+        "staffList"
+    );
 
 const backButton =
-    document.getElementById("backButton");
+    document.getElementById(
+        "backButton"
+    );
+
+
+// =========================
+// スタッフデータ
+// =========================
+
+let staff = [];
+
+
+// =========================
+// Firebaseにログイン
+// =========================
+
+signInAnonymously(auth)
+
+    .then(() => {
+
+        console.log(
+            "Firebaseに接続しました"
+        );
+
+        loadStaff();
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Firebaseログインエラー:",
+            error
+        );
+
+        alert(
+            "Firebaseに接続できませんでした。"
+        );
+
+    });
+
+
+// =========================
+// スタッフ読み込み
+// =========================
+
+function loadStaff() {
+
+    const staffRef =
+        ref(
+            database,
+            "staff"
+        );
+
+
+    onValue(
+        staffRef,
+        snapshot => {
+
+            const data =
+                snapshot.val();
+
+
+            if (!data) {
+
+                staff = [];
+
+            } else {
+
+                staff =
+                    Object.entries(
+                        data
+                    ).map(
+                        ([id, person]) => ({
+
+                            id: id,
+
+                            name:
+                                person.name,
+
+                            jobs:
+                                person.jobs || []
+
+                        })
+                    );
+
+            }
+
+
+            displayStaff();
+
+        }
+    );
+
+}
 
 
 // =========================
@@ -34,7 +195,9 @@ function displayStaff() {
     staffList.innerHTML = "";
 
 
-    if (staff.length === 0) {
+    if (
+        staff.length === 0
+    ) {
 
         staffList.innerHTML = `
             <p class="empty-message">
@@ -43,15 +206,20 @@ function displayStaff() {
         `;
 
         return;
+
     }
 
 
-    staff.forEach((person, index) => {
+    staff.forEach(person => {
 
         const card =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
-        card.className = "staff-item";
+
+        card.className =
+            "staff-item";
 
 
         card.innerHTML = `
@@ -64,9 +232,10 @@ function displayStaff() {
 
                 <p>
                     担当：
-                    ${person.jobs.length > 0
-                        ? person.jobs.join("・")
-                        : "未設定"
+                    ${
+                        person.jobs.length > 0
+                            ? person.jobs.join("・")
+                            : "未設定"
                     }
                 </p>
 
@@ -77,7 +246,7 @@ function displayStaff() {
 
                 <button
                     class="edit-button"
-                    onclick="editStaff(${index})"
+                    data-id="${person.id}"
                 >
                     編集
                 </button>
@@ -85,7 +254,7 @@ function displayStaff() {
 
                 <button
                     class="delete-button"
-                    onclick="deleteStaff(${index})"
+                    data-id="${person.id}"
                 >
                     削除
                 </button>
@@ -95,7 +264,45 @@ function displayStaff() {
         `;
 
 
-        staffList.appendChild(card);
+        // 編集
+
+        card
+            .querySelector(
+                ".edit-button"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+                    editStaff(
+                        person.id
+                    );
+
+                }
+            );
+
+
+        // 削除
+
+        card
+            .querySelector(
+                ".delete-button"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+                    deleteStaff(
+                        person.id
+                    );
+
+                }
+            );
+
+
+        staffList.appendChild(
+            card
+        );
 
     });
 
@@ -108,7 +315,7 @@ function displayStaff() {
 
 staffForm.addEventListener(
     "submit",
-    function(event) {
+    async function(event) {
 
         event.preventDefault();
 
@@ -117,7 +324,12 @@ staffForm.addEventListener(
             staffName.value.trim();
 
 
-        // 担当できる仕事を取得
+        if (!name) {
+
+            return;
+
+        }
+
 
         const checkedJobs =
             document.querySelectorAll(
@@ -126,42 +338,57 @@ staffForm.addEventListener(
 
 
         const jobs =
-            Array.from(checkedJobs)
-                .map(job => job.value);
+            Array.from(
+                checkedJobs
+            )
+            .map(
+                job => job.value
+            );
 
 
-        // スタッフを追加
+        try {
 
-        staff.push({
-
-            name: name,
-
-            jobs: jobs
-
-        });
-
-
-        // 保存
-
-        localStorage.setItem(
-            "staff",
-            JSON.stringify(staff)
-        );
+            const staffRef =
+                push(
+                    ref(
+                        database,
+                        "staff"
+                    )
+                );
 
 
-        // フォームをリセット
+            await set(
+                staffRef,
+                {
 
-        staffForm.reset();
+                    name: name,
+
+                    jobs: jobs
+
+                }
+            );
 
 
-        // 一覧更新
-
-        displayStaff();
+            staffForm.reset();
 
 
-        alert(
-            "スタッフを登録しました！"
-        );
+            alert(
+                "スタッフを登録しました！"
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                error
+            );
+
+            alert(
+                "スタッフの登録に失敗しました。"
+            );
+
+        }
 
     }
 );
@@ -171,10 +398,20 @@ staffForm.addEventListener(
 // スタッフ編集
 // =========================
 
-function editStaff(index) {
+async function editStaff(id) {
 
     const person =
-        staff[index];
+        staff.find(
+            item =>
+                item.id === id
+        );
+
+
+    if (!person) {
+
+        return;
+
+    }
 
 
     const newName =
@@ -194,22 +431,42 @@ function editStaff(index) {
     }
 
 
-    person.name =
-        newName.trim();
+    try {
+
+        await set(
+            ref(
+                database,
+                "staff/" + id
+            ),
+            {
+
+                name:
+                    newName.trim(),
+
+                jobs:
+                    person.jobs || []
+
+            }
+        );
 
 
-    localStorage.setItem(
-        "staff",
-        JSON.stringify(staff)
-    );
+        alert(
+            "スタッフ情報を更新しました！"
+        );
 
+    }
 
-    displayStaff();
+    catch (error) {
 
+        console.error(
+            error
+        );
 
-    alert(
-        "スタッフ情報を更新しました！"
-    );
+        alert(
+            "スタッフ情報の更新に失敗しました。"
+        );
+
+    }
 
 }
 
@@ -218,10 +475,20 @@ function editStaff(index) {
 // スタッフ削除
 // =========================
 
-function deleteStaff(index) {
+async function deleteStaff(id) {
 
     const person =
-        staff[index];
+        staff.find(
+            item =>
+                item.id === id
+        );
+
+
+    if (!person) {
+
+        return;
+
+    }
 
 
     const result =
@@ -237,41 +504,47 @@ function deleteStaff(index) {
     }
 
 
-    staff.splice(index, 1);
+    try {
+
+        await remove(
+            ref(
+                database,
+                "staff/" + id
+            )
+        );
 
 
-    localStorage.setItem(
-        "staff",
-        JSON.stringify(staff)
-    );
+        alert(
+            "スタッフを削除しました。"
+        );
 
+    }
 
-    displayStaff();
+    catch (error) {
 
+        console.error(
+            error
+        );
 
-    alert(
-        "スタッフを削除しました。"
-    );
+        alert(
+            "スタッフの削除に失敗しました。"
+        );
+
+    }
 
 }
 
 
 // =========================
-// シフト表へ戻る
+// 戻る
 // =========================
 
 backButton.addEventListener(
     "click",
     function() {
 
-        location.href = "index.html";
+        location.href =
+            "index.html";
 
     }
 );
-
-
-// =========================
-// 初期表示
-// =========================
-
-displayStaff();
