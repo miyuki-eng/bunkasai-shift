@@ -164,24 +164,39 @@ onValue(shiftDataRef, snapshot => {
 
                     id: id,
 
-                    day: String(shift.day),
+                    day: String(
+                        shift.day
+                    ),
 
-                    time: shift.time,
+                    time:
+                        shift.time || "",
 
                     sales:
                         Array.isArray(shift.sales)
                             ? shift.sales
-                            : [],
+                            : shift.sales
+                                ? Object.values(
+                                    shift.sales
+                                )
+                                : [],
 
                     workshop:
                         Array.isArray(shift.workshop)
                             ? shift.workshop
-                            : [],
+                            : shift.workshop
+                                ? Object.values(
+                                    shift.workshop
+                                )
+                                : [],
 
                     break:
                         Array.isArray(shift.break)
                             ? shift.break
-                            : []
+                            : shift.break
+                                ? Object.values(
+                                    shift.break
+                                )
+                                : []
 
                 });
 
@@ -191,14 +206,13 @@ onValue(shiftDataRef, snapshot => {
     }
 
     console.log(
-        "Firebaseシフト読み込み:",
+        "🔥 Firebaseシフト読み込み:",
         shiftData
     );
 
     displayShifts();
 
 });
-
 
 // =========================
 // 時間帯表示
@@ -400,18 +414,15 @@ registerButton.addEventListener(
 
         if (!shift) {
 
-            const newRef =
-                push(shiftDataRef);
+            const newRef = push(shiftDataRef);
 
             shift = {
 
                 id: newRef.key,
 
-                day:
-                    String(selectedDay),
+                day: String(selectedDay),
 
-                time:
-                    time,
+                time: time,
 
                 sales: [],
 
@@ -420,8 +431,6 @@ registerButton.addEventListener(
                 break: []
 
             };
-
-            shiftData.push(shift);
 
         }
 
