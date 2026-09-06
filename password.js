@@ -3,7 +3,7 @@
 // パスワード設定
 // ==================================================
 
-const SHIFT_PASSWORD = "shift1234";
+const SHIFT_PASSWORD = "craftshift";
 
 const loginForm =
     document.getElementById("loginForm");
