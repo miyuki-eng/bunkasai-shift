@@ -12,7 +12,7 @@ const isLoggedIn =
 if (!isLoggedIn) {
 
     window.location.replace(
-        "shift-password.html"
+        "password.html"
     );
 
 }
